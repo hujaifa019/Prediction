@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinGo Prediction</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .header {
+      background-color: gold;
+      color: white;
+      padding: 10px;
+      border: 2px solid red;
+      border-radius: 10px;
+      box-shadow: 0 0 15px red;
+      font-size: 1.5em;
+    }
+
+    .button {
+      background-color: red;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      height: 400px;
+      background-color: black;
+      border: 2px solid red;
+      border-radius: 10px;
+      box-shadow: 0 0 15px red;
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    .popup-header {
+      color: red;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .popup-content {
+      font-size: 2em;
+      margin: 20px 0;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .timer {
+      color: yellow;
+      font-size: 1.5em;
+    }
+
+    .popup-footer {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+    }
+
+    .popup-footer button {
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1em;
+    }
+
+    .popup-footer button:hover {
+      background-color: red;
+      color: white;
+    }
+
+    .popup-footer button:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">WinGo Predictor</div>
+  <button class="button" onclick="showPopup()">START TIMER</button>
+
+  <div class="popup" id="floatingPopup">
+    <div class="popup-header">WinGo Timer</div>
+    <div class="timer" id="timer">--:--</div>
+    <div class="popup-content" id="popupContent">SMALL</div>
+    <div class="popup-footer">
+      <button id="winButton" onclick="checkResult('WIN')" disabled>WIN</button>
+      <button id="lossButton" onclick="checkResult('LOSS')" disabled>LOSS</button>
+    </div>
+    <div class="popup-footer">
+      <button onclick="exitPopup()">EXIT</button>
+    </div>
+  </div>
+
+  <script>
+    let timerInterval;
+    let canUpdateScore = true;
+    let winCount = 0;
+    let lossCount = 0;
+
+    // Function to start the timer
+    function startWinGoTimer() {
+      function updateTimer() {
+        let currentTimestamp = Math.floor(Date.now() / 1000);
+        let remainingSeconds = (60 - ((currentTimestamp - 35) % 60)) % 60;
+        let seconds = remainingSeconds % 60;
+        document.getElementById('timer').textContent = `0:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (remainingSeconds === 1) {
+          changePrediction();
+          canUpdateScore = true;
+        }
+      }
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    // Function to show the popup
+    function showPopup() {
+      document.getElementById('floatingPopup').style.display = 'block';
+      startWinGoTimer();
+      enableButtons(); // Enable the buttons when timer starts
+    }
+
+    // Function to exit the popup
+    function exitPopup() {
+      document.getElementById('floatingPopup').style.display = 'none';
+      clearInterval(timerInterval);
+      disableButtons(); // Disable the buttons when exiting
+    }
+
+    // Function to change the prediction between 'SMALL' and 'BIG'
+    function changePrediction() {
+      const content = document.getElementById('popupContent');
+      const options = ['SMALL', 'BIG'];
+      content.textContent = options[Math.floor(Math.random() * options.length)];
+    }
+
+    // Function to handle Win or Loss click
+    function checkResult(result) {
+      if (!canUpdateScore) return; // Prevent updating before the timer resets
+
+      // Increment win or loss count based on the result
+      if (result === 'WIN') {
+        winCount++;
+      } else if (result === 'LOSS') {
+        lossCount++;
+      }
+
+      // Display win/loss counts
+      alert(`WIN count: ${winCount}, LOSS count: ${lossCount}`);
+
+      // Disable the buttons to prevent multiple clicks
+      disableButtons();
+
+      // Reset the score update possibility after 60 seconds
+      canUpdateScore = false;
+    }
+
+    // Function to enable the Win and Loss buttons
+    function enableButtons() {
+      document.getElementById('winButton').disabled = false;
+      document.getElementById('lossButton').disabled = false;
+    }
+
+    // Function to disable the Win and Loss buttons
+    function disableButtons() {
+      document.getElementById('winButton').disabled = true;
+      document.getElementById('lossButton').disabled = true;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Game Search</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body { background-color: #000000; font-family: 'Arial', sans-serif; }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-white">
+  <div class="text-center">
+    <img alt="Anime character" class="rounded-full mx-auto mb-4" height="100" src="https://storage.googleapis.com/a1aa/image/YOxnIBB2zVnr8tz8vpq6f2geOvhBe7nR0YAfQuu_Lbs.jpg" width="100"/>
+    <h1 class="text-yellow-500 text-xl font-bold mb-4">ASHURA LZR !</h1>
+    <button class="bg-yellow-500 text-black font-bold py-2 px-4 rounded mb-6 flex items-center justify-center mx-auto">
+      <i class="fas fa-search mr-2"></i> SEARCH GAME
+    </button>
+    <div class="w-80 mx-auto">
+      <div class="bg-black border border-green-500 rounded mb-4 p-2">
+        <span class="text-green-500 text-sm block">License Key</span>
+        <input id="licenseKey" type="text" placeholder="Enter License Key" class="w-full bg-black text-white border-none outline-none mt-2 p-1 text-center"/>
+      </div>
+    </div>
+    <div class="flex justify-center space-x-4">
+      <button class="bg-yellow-500 text-black font-bold py-2 px-4 rounded" onclick="getKey()">GET KEY</button>
+      <button class="bg-yellow-500 text-black font-bold py-2 px-4 rounded" onclick="login()">LOGIN</button>
+    </div>
+  </div>
+  <script>
+    function getKey() { document.getElementById("licenseKey").value = "SAMPLE-KEY-12345"; }
+    function login() {
+      let key = document.getElementById("licenseKey").value;
+      if (key === "SAMPLE-KEY-12345") {
+        alert("Login Successful!");
+        window.location.href = "winGo.html"; 
+      } else {
+        alert("Invalid License Key!");
+      }
+    }
+  </script>
+</body>
+</html>
